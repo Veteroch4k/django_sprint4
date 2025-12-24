@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, ListView, DeleteView
 from django.contrib.auth.models import User
 
-# Дальше идет ваш код: def index(request): ...
+
 
 def index(request):
     """Главная страница: 5 последних опубликованных постов."""
@@ -74,10 +74,26 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['first_name', 'last_name', 'username', 'email']
     template_name = 'blog/user.html'
 
-    # Получаем текущего пользователя
     def get_object(self):
         return self.request.user
 
-    # Куда перенаправить после успеха (на свой же профиль)
+
     def get_success_url(self):
-        return reverse_lazy('profile', kwargs={'username': self.request.user.username})
+        return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    template_name = 'blog/create.html'
+    # Указываем поля, которые пользователь заполняет сам
+    # (image добавляем, так как по заданию нужны картинки)
+    fields = ['title', 'text', 'image', 'category', 'location', 'pub_date']
+
+    # Автоматически сохраняем автора
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # После успеха перенаправляем на профиль
+    def get_success_url(self):
+        return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})

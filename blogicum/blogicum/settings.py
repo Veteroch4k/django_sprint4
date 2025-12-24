@@ -132,3 +132,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+
+# После входа перебрасываем на главную
+LOGIN_REDIRECT_URL = 'index'
+
+# Если не залогинен — на страницу входа
+LOGIN_URL = 'login'

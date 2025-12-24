@@ -16,4 +16,6 @@ urlpatterns = [
 
     # 2. Профиль пользователя (например: /profile/admin/)
     path('profile/<str:username>/', views.profile, name='profile'),
+
+    path('posts/create/', views.PostCreateView.as_view(), name='create_post'),
 ]
