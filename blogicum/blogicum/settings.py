@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1ficuc%zomb1jf2%3ks=+s+20e3andgedaa-wy0u@ioga9dog7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -147,3 +146,5 @@ MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # Папка, куда будут падать письма
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+
+CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'

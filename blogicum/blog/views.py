@@ -14,6 +14,7 @@ from .forms import CommentForm
 
 def index(request):
     """Главная страница."""
+
     post_list = Post.objects.select_related(
         'author', 'category', 'location'
     ).filter(
