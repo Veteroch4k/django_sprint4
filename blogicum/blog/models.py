@@ -75,9 +75,13 @@ class Post(PublishedModel):
                                  null=True,
                                  verbose_name='Категория')
 
+    image = models.ImageField('Фото', upload_to='posts_images', blank=True)
+
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
     def __str__(self):
         return self.title[:MAX_DISPLAY_LENGTH]
+
+

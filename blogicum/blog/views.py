@@ -82,18 +82,35 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})
 
 
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'blog/create.html'
+    fields = ['title', 'text', 'image', 'category', 'location', 'pub_date']
+
+    # Проверка: редактирует только автор
+    def dispatch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.author != request.user:
+            return redirect('blog:post_detail', post_id=instance.pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    # Куда перенаправить после успеха (на страницу самого поста)
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', kwargs={'post_id': self.object.pk})
+
+
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/create.html'
-    # Указываем поля, которые пользователь заполняет сам
-    # (image добавляем, так как по заданию нужны картинки)
     fields = ['title', 'text', 'image', 'category', 'location', 'pub_date']
 
-    # Автоматически сохраняем автора
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    # После успеха перенаправляем на профиль
     def get_success_url(self):
         return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})

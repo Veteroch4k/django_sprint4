@@ -139,3 +139,6 @@ LOGIN_REDIRECT_URL = 'index'
 
 # Если не залогинен — на страницу входа
 LOGIN_URL = 'login'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
