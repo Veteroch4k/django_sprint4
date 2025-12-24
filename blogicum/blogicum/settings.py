@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
 
 
 # После входа перебрасываем на главную
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'blog:index'
 
 # Если не залогинен — на страницу входа
 LOGIN_URL = 'login'
