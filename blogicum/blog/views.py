@@ -1,7 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post, Category
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, CreateView, ListView, DeleteView
+from django.contrib.auth.models import User
 
+# Дальше идет ваш код: def index(request): ...
 
 def index(request):
     """Главная страница: 5 последних опубликованных постов."""
@@ -46,3 +51,33 @@ def category_posts(request, slug):
         'blog/category.html',
         {'category': category, 'posts': posts}
     )
+
+
+def profile(request, username):
+    # Ищем пользователя по никнейму, если нет — 404
+    profile_user = get_object_or_404(User, username=username)
+
+    # Выбираем посты этого пользователя
+
+    user_posts = Post.objects.filter(author=profile_user)
+
+    context = {
+        'profile': profile_user,
+        'posts': user_posts,
+    }
+    return render(request, 'blog/profile.html', context)
+
+
+# Редактирование профиля
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ['first_name', 'last_name', 'username', 'email']
+    template_name = 'blog/user.html'
+
+    # Получаем текущего пользователя
+    def get_object(self):
+        return self.request.user
+
+    # Куда перенаправить после успеха (на свой же профиль)
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'username': self.request.user.username})

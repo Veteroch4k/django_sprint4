@@ -11,4 +11,9 @@ urlpatterns = [
         views.category_posts,
         name='category_posts'
     ),
+
+    path('edit_profile/', views.UserUpdateView.as_view(), name='edit_profile'),
+
+    # 2. Профиль пользователя (например: /profile/admin/)
+    path('profile/<str:username>/', views.profile, name='profile'),
 ]
