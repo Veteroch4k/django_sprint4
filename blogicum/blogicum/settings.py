@@ -142,3 +142,8 @@ LOGIN_URL = 'login'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+# Эмуляция отправки писем в папку
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# Папка, куда будут падать письма
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
